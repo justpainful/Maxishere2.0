@@ -1,0 +1,98 @@
+name: Max
+options:
+  bundleIdPrefix: app.max
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+settings:
+  base:
+    SWIFT_VERSION: 6.0
+    SWIFT_STRICT_CONCURRENCY: complete
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+targets:
+  Max:
+    type: application
+    platform: iOS
+    deploymentTarget: "26.0"
+    # AppIdentity.xcconfig also supplies MAX_API_BASE_URL / MAX_WS_URL /
+    # MAX_BACKEND_HOSTS, which Resources/Info.plist expands and
+    # MaxConfiguration.fromBundle() reads. Do not redeclare them under
+    # `settings` below: target settings outrank the xcconfig and would make the
+    # deployment origin unoverridable.
+    configFiles:
+      Debug: Config/AppIdentity.xcconfig
+      Release: Config/AppIdentity.xcconfig
+    sources:
+      - path: .
+        excludes:
+          - Resources/**
+          - Tests/**
+          - README.md
+          - project.yml
+          - Config/**
+          - Clip/**
+          - Features/ChatsV3/S6Clean/**
+      - path: Resources
+    settings:
+      base:
+        PRODUCT_NAME: Max
+        MARKETING_VERSION: 2.2.0
+        CURRENT_PROJECT_VERSION: 9
+        SWIFT_VERSION: 6.0
+        SWIFT_STRICT_CONCURRENCY: complete
+        TARGETED_DEVICE_FAMILY: 1
+        SUPPORTS_MACCATALYST: NO
+        INFOPLIST_FILE: Resources/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        GENERATE_LOCALIZATION_SYMBOLS: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_ENTITLEMENTS: Config/Max.entitlements
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: $(MAX_DEVELOPMENT_TEAM)
+      configs:
+        Debug:
+          ENABLE_TESTABILITY: YES
+  MaxTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: Tests/MaxTests
+    dependencies:
+      - target: Max
+    settings:
+      base:
+        PRODUCT_NAME: MaxTests
+        PRODUCT_BUNDLE_IDENTIFIER: app.max.iphone.tests
+        SWIFT_VERSION: 6.0
+        SWIFT_STRICT_CONCURRENCY: complete
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Max.app/Max"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+  MaxUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: Tests/MaxUITests
+    dependencies:
+      - target: Max
+    settings:
+      base:
+        PRODUCT_NAME: MaxUITests
+        PRODUCT_BUNDLE_IDENTIFIER: app.max.iphone.uitests
+        SWIFT_VERSION: 6.0
+        SWIFT_STRICT_CONCURRENCY: complete
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  Max:
+    build:
+      targets:
+        Max: all
+        MaxTests: [test]
+    test:
+      targets:
+        - MaxTests
+        - MaxUITests
+      gatherCoverageData: true
