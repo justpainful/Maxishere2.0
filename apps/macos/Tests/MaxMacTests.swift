@@ -1,5 +1,5 @@
 import XCTest
-@testable import MaxMac
+@testable import Max
 
 final class MaxMacTests: XCTestCase {
   @MainActor
@@ -59,4 +59,3 @@ final class MaxMacTests: XCTestCase {
     XCTAssertEqual(AppTheme.allCases.count, 6)
   }
 }
-
