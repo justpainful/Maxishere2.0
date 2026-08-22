@@ -1,0 +1,79 @@
+name: MaxMac
+options:
+  bundleIdPrefix: app.max
+  deploymentTarget:
+    macOS: "26.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+settings:
+  base:
+    SWIFT_VERSION: 6.0
+    SWIFT_STRICT_CONCURRENCY: complete
+    MACOSX_DEPLOYMENT_TARGET: "26.0"
+targets:
+  MaxMac:
+    type: application
+    platform: macOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: .
+        excludes:
+          - Tests/**
+          - UITests/**
+          - README.md
+          - project.yml
+    settings:
+      base:
+        PRODUCT_NAME: Max
+        PRODUCT_BUNDLE_IDENTIFIER: app.max.macos
+        MARKETING_VERSION: 2.2.0
+        CURRENT_PROJECT_VERSION: 1
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Max
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.entertainment
+        INFOPLIST_KEY_NSHumanReadableCopyright: Copyright 2026 Max. All rights reserved.
+        CODE_SIGN_STYLE: Automatic
+        ENABLE_HARDENED_RUNTIME: YES
+        COMBINE_HIDPI_IMAGES: YES
+      configs:
+        Debug:
+          ENABLE_TESTABILITY: YES
+  MaxMacTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: Tests
+    dependencies:
+      - target: MaxMac
+    settings:
+      base:
+        PRODUCT_NAME: MaxMacTests
+        PRODUCT_BUNDLE_IDENTIFIER: app.max.macos.tests
+        GENERATE_INFOPLIST_FILE: YES
+  MaxMacUITests:
+    type: bundle.ui-testing
+    platform: macOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: UITests
+    dependencies:
+      - target: MaxMac
+    settings:
+      base:
+        PRODUCT_NAME: MaxMacUITests
+        PRODUCT_BUNDLE_IDENTIFIER: app.max.macos.uitests
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  MaxMac:
+    build:
+      targets:
+        MaxMac: all
+        MaxMacTests: [test]
+        MaxMacUITests: [test]
+    test:
+      targets:
+        - MaxMacTests
+        - MaxMacUITests
+      gatherCoverageData: true
+
