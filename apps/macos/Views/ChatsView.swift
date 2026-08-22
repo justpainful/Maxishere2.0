@@ -51,6 +51,7 @@ struct ChatsView: View {
         Spacer()
         Button { showsNewConversation = true } label: { Image(systemName: "square.and.pencil") }
           .buttonStyle(.glass)
+          .accessibilityLabel("New Conversation")
           .accessibilityIdentifier("mac_chat_new")
       }
       .padding(16)
@@ -117,6 +118,7 @@ struct ChatsView: View {
             Button { } label: { Image(systemName: "video.fill") }.buttonStyle(.glass)
             Button { showsDetails.toggle() } label: { Image(systemName: "info.circle.fill") }
               .buttonStyle(.glass)
+              .accessibilityLabel("Conversation Details")
               .accessibilityIdentifier("mac_chat_details")
           }
         }

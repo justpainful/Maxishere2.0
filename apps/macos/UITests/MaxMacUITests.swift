@@ -73,10 +73,16 @@ final class MaxMacUITests: XCTestCase {
 
     open(.shared, screen: "mac_shared_screen")
     try capture("10-shared-files")
-    app.buttons["Spaces"].click()
+    let spacesSegment = app.radioButtons["Spaces"].firstMatch
+    XCTAssertTrue(spacesSegment.waitForExistence(timeout: 8), "Missing Spaces segment")
+    spacesSegment.click()
     waitFor("mac_shared_spaces")
     try capture("11-shared-spaces")
-    require("mac_workspace_demo-space-studio").click()
+    let studioWorkspace = app.buttons
+      .matching(NSPredicate(format: "label CONTAINS %@", "Evening Studio"))
+      .firstMatch
+    XCTAssertTrue(studioWorkspace.waitForExistence(timeout: 8), "Missing Evening Studio workspace")
+    studioWorkspace.click()
     waitFor("mac_workspace_detail")
     try capture("12-workspace-detail")
     app.typeKey(.escape, modifierFlags: [])
@@ -84,17 +90,23 @@ final class MaxMacUITests: XCTestCase {
     open(.chats, screen: "mac_chats_screen")
     waitFor("mac_chat_detail")
     try capture("13-chats-conversation")
-    require("mac_chat_details").click()
+    let conversationDetailsButton = app.buttons["Conversation Details"].firstMatch
+    XCTAssertTrue(conversationDetailsButton.waitForExistence(timeout: 8), "Missing conversation details button")
+    conversationDetailsButton.click()
     waitFor("mac_chat_details_panel")
     try capture("14-chat-details-panel")
-    require("mac_chat_new").click()
+    let newConversationButton = app.buttons["New Conversation"].firstMatch
+    XCTAssertTrue(newConversationButton.waitForExistence(timeout: 8), "Missing new conversation button")
+    newConversationButton.click()
     waitFor("mac_new_conversation")
     try capture("15-new-conversation")
     app.typeKey(.escape, modifierFlags: [])
 
     open(.profile, screen: "mac_profile_screen")
     try capture("16-profile")
-    require("mac_profile_edit").click()
+    let editProfileButton = app.buttons["Edit Profile"].firstMatch
+    XCTAssertTrue(editProfileButton.waitForExistence(timeout: 8), "Missing Edit Profile button")
+    editProfileButton.click()
     waitFor("mac_profile_editor")
     try capture("17-profile-editor")
     app.typeKey(.escape, modifierFlags: [])
