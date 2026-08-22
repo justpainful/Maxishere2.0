@@ -38,6 +38,12 @@ struct ChatsView: View {
     .animation(.snappy, value: showsDetails)
     .navigationTitle(model.copy("chats"))
     .accessibilityIdentifier("mac_chats_screen")
+    .task {
+      try? await Task.sleep(for: .milliseconds(150))
+      if model.selectedThreadID == nil {
+        model.selectedThreadID = visibleThreads.first?.id
+      }
+    }
     .sheet(isPresented: $showsNewConversation) {
       NewConversationView(isPresented: $showsNewConversation)
         .environment(model)
