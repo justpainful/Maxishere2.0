@@ -51,6 +51,8 @@ targets:
         PRODUCT_NAME: MaxMacTests
         PRODUCT_BUNDLE_IDENTIFIER: app.max.macos.tests
         GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Max.app/Contents/MacOS/Max"
+        BUNDLE_LOADER: "$(TEST_HOST)"
   MaxMacUITests:
     type: bundle.ui-testing
     platform: macOS
@@ -76,4 +78,3 @@ schemes:
         - MaxMacTests
         - MaxMacUITests
       gatherCoverageData: true
-
