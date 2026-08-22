@@ -34,7 +34,9 @@ final class MaxMacUITests: XCTestCase {
     waitFor("mac_media_detail")
     try capture("04-player-native-liquid-glass")
 
-    require("mac_player_rate").click()
+    let ratingButton = app.buttons.matching(identifier: "mac_player_rate").firstMatch
+    XCTAssertTrue(ratingButton.waitForExistence(timeout: 8), "Missing rating button")
+    ratingButton.click()
     waitFor("mac_rating_editor")
     try capture("05-dual-rating-editor")
     require("mac_rating_save").click()
@@ -107,7 +109,11 @@ final class MaxMacUITests: XCTestCase {
       try capture("22-theme-\(theme)", fullScreen: true)
     }
 
-    app.buttons["العربية"].click()
+    let languagePicker = require("mac_settings_language")
+    languagePicker
+      .coordinate(withNormalizedOffset: CGVector(dx: 0.75, dy: 0.5))
+      .click()
+    XCTAssertTrue(app.staticTexts["الإعدادات"].waitForExistence(timeout: 8), "Arabic interface did not appear")
     try capture("23-settings-arabic-rtl", fullScreen: true)
   }
 

@@ -146,6 +146,8 @@ struct MediaDetailView: View {
           .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 17))
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Open ratings")
         .accessibilityIdentifier("mac_player_rate")
 
         Divider()
@@ -307,4 +309,3 @@ private struct ShareToChatView: View {
     .accessibilityIdentifier("mac_share_to_chat")
   }
 }
-
