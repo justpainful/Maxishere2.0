@@ -43,7 +43,7 @@ final class MaxMacUITests: XCTestCase {
     XCTAssertTrue(saveRatingButton.waitForExistence(timeout: 8), "Missing Save rating button")
     saveRatingButton.click()
     waitFor("mac_media_detail")
-    require("mac_player_close").click()
+    app.typeKey(.escape, modifierFlags: [])
     waitFor("mac_vault_screen")
 
     app.buttons["Upload"].firstMatch.click()
