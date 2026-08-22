@@ -19,8 +19,10 @@ final class MaxMacUITests: XCTestCase {
     launch(authenticated: false, width: 1380, height: 900)
     try capture("01-authentication-wide", fullScreen: true)
 
-    require("mac_auth_continue").click()
-    waitFor("mac_credentials_sheet")
+    let continueButton = app.buttons["Continue to Max"]
+    XCTAssertTrue(continueButton.waitForExistence(timeout: 8))
+    continueButton.click()
+    XCTAssertTrue(app.textFields["mac_auth_email"].waitForExistence(timeout: 8))
     try capture("02-authentication-credentials")
     app.terminate()
 
@@ -40,7 +42,7 @@ final class MaxMacUITests: XCTestCase {
     require("mac_player_close").click()
     waitFor("mac_vault_screen")
 
-    require("mac_toolbar_upload").click()
+    app.buttons["Upload"].firstMatch.click()
     waitFor("mac_upload_sheet")
     try capture("06-upload-sheet")
     require("mac_upload_start").click()
@@ -122,6 +124,10 @@ final class MaxMacUITests: XCTestCase {
   }
 
   private func launch(authenticated: Bool, width: Int, height: Int) {
+    app.launchArguments = [
+      "-MaxMacUITestMode",
+      authenticated ? "-MaxMacUITestAuthenticated" : "-MaxMacUITestLoggedOut",
+    ]
     app.launchEnvironment["MAX_MAC_UI_TESTING"] = "1"
     app.launchEnvironment["MAX_MAC_UI_TEST_AUTHENTICATED"] = authenticated ? "1" : "0"
     app.launchEnvironment["MAX_MAC_UI_TEST_THEME"] = "max"
@@ -129,7 +135,12 @@ final class MaxMacUITests: XCTestCase {
     app.launchEnvironment["MAX_MAC_WINDOW_WIDTH"] = "\(width)"
     app.launchEnvironment["MAX_MAC_WINDOW_HEIGHT"] = "\(height)"
     app.launch()
-    waitFor(authenticated ? "mac_authenticated_shell" : "mac_authentication", timeout: 15)
+    XCTAssertTrue(app.windows.firstMatch.waitForExistence(timeout: 15), "The Max window did not appear")
+    if authenticated {
+      waitFor("mac_vault_screen", timeout: 15)
+    } else {
+      waitFor("mac_authentication", timeout: 15)
+    }
   }
 
   private func open(_ destination: Destination, screen: String) {
@@ -174,10 +185,13 @@ final class MaxMacUITests: XCTestCase {
     attachment.lifetime = .keepAlways
     add(attachment)
 
-    let environment = ProcessInfo.processInfo.environment
-    let outputRoot = environment["MAX_SCREENSHOT_DIR"]
-      ?? FileManager.default.temporaryDirectory.appendingPathComponent("MaxMacScreenshots").path
-    let output = URL(fileURLWithPath: outputRoot, isDirectory: true)
+    let sourceFile = URL(fileURLWithPath: #filePath)
+    let repositoryRoot = sourceFile
+      .deletingLastPathComponent()
+      .deletingLastPathComponent()
+      .deletingLastPathComponent()
+      .deletingLastPathComponent()
+    let output = repositoryRoot.appending(path: "artifacts/screenshots", directoryHint: .isDirectory)
     try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
     try screenshot.pngRepresentation.write(to: output.appendingPathComponent("\(name).png"), options: .atomic)
   }
@@ -192,4 +206,3 @@ private enum Destination: String {
   case memories
   case plugins
 }
-

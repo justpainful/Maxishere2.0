@@ -35,10 +35,21 @@ final class MaxDesktopModel {
 
   let apiClient: MaxAPIClient
 
-  init(environment: [String: String] = ProcessInfo.processInfo.environment) {
+  init(
+    environment: [String: String] = ProcessInfo.processInfo.environment,
+    arguments: [String] = ProcessInfo.processInfo.arguments
+  ) {
     let testMode = environment["MAX_MAC_UI_TESTING"] == "1"
+      || arguments.contains("-MaxMacUITestMode")
+    let argumentAuthentication: Bool? = if arguments.contains("-MaxMacUITestAuthenticated") {
+      true
+    } else if arguments.contains("-MaxMacUITestLoggedOut") {
+      false
+    } else {
+      nil
+    }
     isAuthenticated = testMode
-      ? environment["MAX_MAC_UI_TEST_AUTHENTICATED"] != "0"
+      ? (argumentAuthentication ?? environment["MAX_MAC_UI_TEST_AUTHENTICATED"] != "0")
       : UserDefaults.standard.bool(forKey: "max.macos.authenticated")
 
     selectedDestination = SidebarDestination(
@@ -196,4 +207,3 @@ final class MaxDesktopModel {
     isProfileEditorPresented = false
   }
 }
-
