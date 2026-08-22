@@ -58,8 +58,16 @@ final class MaxMacUITests: XCTestCase {
 
     open(.library, screen: "mac_library_screen")
     try capture("08-library-overview")
-    for section in ["saved", "ratings", "offline", "collections", "trash"] {
-      require("mac_library_\(section)").click()
+    for (section, label) in [
+      ("saved", "Saved"),
+      ("ratings", "Ratings"),
+      ("offline", "Offline"),
+      ("collections", "Collections"),
+      ("trash", "Trash"),
+    ] {
+      let sectionButton = app.buttons[label].firstMatch
+      XCTAssertTrue(sectionButton.waitForExistence(timeout: 8), "Missing \(label) library section")
+      sectionButton.click()
       try capture("09-library-\(section)")
     }
 
