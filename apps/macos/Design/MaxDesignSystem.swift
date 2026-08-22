@@ -311,8 +311,7 @@ extension AppTheme {
   var preferredColorScheme: ColorScheme? {
     switch self {
     case .light, .clouds: .light
-    case .dark, .spectrum, .council: .dark
-    case .max: nil
+    case .max, .dark, .spectrum, .council: .dark
     }
   }
 }
