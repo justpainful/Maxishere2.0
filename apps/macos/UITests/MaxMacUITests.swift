@@ -88,6 +88,9 @@ final class MaxMacUITests: XCTestCase {
     app.typeKey(.escape, modifierFlags: [])
 
     open(.chats, screen: "mac_chats_screen")
+    let demoConversation = app.staticTexts["Max Demo Bot"].firstMatch
+    XCTAssertTrue(demoConversation.waitForExistence(timeout: 8), "Missing demo conversation")
+    demoConversation.click()
     waitFor("mac_chat_detail")
     try capture("13-chats-conversation")
     let conversationDetailsButton = app.buttons["Conversation Details"].firstMatch
