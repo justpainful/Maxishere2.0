@@ -49,7 +49,7 @@ final class MaxDesktopModel {
       nil
     }
     isAuthenticated = testMode
-      ? (argumentAuthentication ?? environment["MAX_MAC_UI_TEST_AUTHENTICATED"] != "0")
+      ? (argumentAuthentication ?? (environment["MAX_MAC_UI_TEST_AUTHENTICATED"] != "0"))
       : UserDefaults.standard.bool(forKey: "max.macos.authenticated")
 
     selectedDestination = SidebarDestination(
