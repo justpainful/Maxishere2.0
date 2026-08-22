@@ -17,8 +17,8 @@ struct MaxPalette: Sendable {
         secondaryAccent: Color(red: 0.35, green: 0.73, blue: 1.0),
         backgroundTop: Color(red: 0.91, green: 0.95, blue: 1.0),
         backgroundBottom: Color(red: 0.78, green: 0.87, blue: 0.98),
-        textPrimary: Color(red: 0.05, green: 0.08, blue: 0.16),
-        textSecondary: Color(red: 0.25, green: 0.31, blue: 0.42),
+        textPrimary: .primary,
+        textSecondary: .secondary,
         solidSurface: Color.white.opacity(0.94)
       )
     case .dark:
@@ -27,8 +27,8 @@ struct MaxPalette: Sendable {
         secondaryAccent: Color(red: 0.59, green: 0.36, blue: 0.98),
         backgroundTop: Color(red: 0.035, green: 0.045, blue: 0.08),
         backgroundBottom: Color(red: 0.09, green: 0.06, blue: 0.16),
-        textPrimary: .white,
-        textSecondary: Color.white.opacity(0.68),
+        textPrimary: .primary,
+        textSecondary: .secondary,
         solidSurface: Color(red: 0.10, green: 0.11, blue: 0.17).opacity(0.96)
       )
     case .spectrum:
@@ -37,8 +37,8 @@ struct MaxPalette: Sendable {
         secondaryAccent: Color(red: 0.16, green: 0.83, blue: 0.94),
         backgroundTop: Color(red: 0.12, green: 0.04, blue: 0.23),
         backgroundBottom: Color(red: 0.04, green: 0.16, blue: 0.22),
-        textPrimary: .white,
-        textSecondary: Color.white.opacity(0.72),
+        textPrimary: .primary,
+        textSecondary: .secondary,
         solidSurface: Color(red: 0.12, green: 0.08, blue: 0.20).opacity(0.96)
       )
     case .clouds:
@@ -47,8 +47,8 @@ struct MaxPalette: Sendable {
         secondaryAccent: Color(red: 0.48, green: 0.80, blue: 1.0),
         backgroundTop: Color(red: 0.67, green: 0.85, blue: 1.0),
         backgroundBottom: Color(red: 0.90, green: 0.95, blue: 1.0),
-        textPrimary: Color(red: 0.04, green: 0.16, blue: 0.29),
-        textSecondary: Color(red: 0.20, green: 0.36, blue: 0.51),
+        textPrimary: .primary,
+        textSecondary: .secondary,
         solidSurface: Color.white.opacity(0.94)
       )
     case .council:
@@ -57,8 +57,8 @@ struct MaxPalette: Sendable {
         secondaryAccent: Color(red: 0.58, green: 0.39, blue: 0.16),
         backgroundTop: Color(red: 0.11, green: 0.075, blue: 0.045),
         backgroundBottom: Color(red: 0.24, green: 0.13, blue: 0.055),
-        textPrimary: Color(red: 1.0, green: 0.94, blue: 0.78),
-        textSecondary: Color(red: 0.91, green: 0.80, blue: 0.60),
+        textPrimary: .primary,
+        textSecondary: .secondary,
         solidSurface: Color(red: 0.20, green: 0.13, blue: 0.07).opacity(0.97)
       )
     case .max:
@@ -71,8 +71,11 @@ struct MaxPalette: Sendable {
         backgroundBottom: colorScheme == .dark
           ? Color(red: 0.14, green: 0.055, blue: 0.19)
           : Color(red: 0.94, green: 0.88, blue: 1.0),
-        textPrimary: colorScheme == .dark ? .white : Color(red: 0.045, green: 0.06, blue: 0.13),
-        textSecondary: colorScheme == .dark ? Color.white.opacity(0.70) : Color(red: 0.26, green: 0.29, blue: 0.40),
+        // Semantic foreground colors participate in Tahoe's material vibrancy.
+        // Fixed white/black colors lose contrast when Liquid Glass shifts from
+        // the dark atmosphere behind it to a light, elevated glass surface.
+        textPrimary: .primary,
+        textSecondary: .secondary,
         solidSurface: colorScheme == .dark
           ? Color(red: 0.10, green: 0.10, blue: 0.18).opacity(0.96)
           : Color.white.opacity(0.94)
@@ -313,4 +316,3 @@ extension AppTheme {
     }
   }
 }
-
