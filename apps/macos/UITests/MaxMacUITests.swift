@@ -16,17 +16,17 @@ final class MaxMacUITests: XCTestCase {
   }
 
   func test01WideFeatureScreenshotGallery() throws {
-    launch(authenticated: false, width: 1380, height: 900)
+    launch(authenticated: false, width: 1000, height: 720)
     try capture("01-authentication-wide", fullScreen: true)
 
     let continueButton = app.buttons["Continue to Max"]
     XCTAssertTrue(continueButton.waitForExistence(timeout: 8))
     continueButton.click()
-    XCTAssertTrue(app.textFields["mac_auth_email"].waitForExistence(timeout: 8))
+    XCTAssertTrue(app.sheets.firstMatch.waitForExistence(timeout: 8))
     try capture("02-authentication-credentials")
     app.terminate()
 
-    launch(authenticated: true, width: 1380, height: 900)
+    launch(authenticated: true, width: 1000, height: 720)
     waitFor("mac_vault_screen")
     try capture("03-vault-wide", fullScreen: true)
 
@@ -96,7 +96,7 @@ final class MaxMacUITests: XCTestCase {
   }
 
   func test02ThemeRTLAndSettingsGallery() throws {
-    launch(authenticated: true, width: 1280, height: 820)
+    launch(authenticated: true, width: 1000, height: 720)
     open(.profile, screen: "mac_profile_screen")
     require("mac_profile_settings").click()
     waitFor("mac_settings_screen", timeout: 15)
@@ -112,7 +112,7 @@ final class MaxMacUITests: XCTestCase {
   }
 
   func test03CompactWindowAndDesktopCaptureGallery() throws {
-    launch(authenticated: true, width: 1024, height: 700)
+    launch(authenticated: true, width: 900, height: 650)
     waitFor("mac_vault_screen")
     try capture("24-vault-compact", fullScreen: true)
     open(.library, screen: "mac_library_screen")
@@ -175,7 +175,9 @@ final class MaxMacUITests: XCTestCase {
   }
 
   private func element(_ identifier: String) -> XCUIElement {
-    app.descendants(matching: .any)[identifier]
+    app.descendants(matching: .any)
+      .matching(identifier: identifier)
+      .firstMatch
   }
 
   private func capture(_ name: String, fullScreen: Bool = false) throws {

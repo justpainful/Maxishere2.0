@@ -137,6 +137,7 @@ struct AppShellView: View {
       }
     }
     .tag(destination)
+    .accessibilityElement(children: .combine)
     .accessibilityIdentifier("mac_sidebar_\(destination.rawValue)")
   }
 
@@ -191,4 +192,3 @@ private struct SidebarIdentityCard: View {
     .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 17))
   }
 }
-
