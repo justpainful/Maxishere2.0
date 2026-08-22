@@ -106,7 +106,7 @@ final class MaxMacUITests: XCTestCase {
 
     open(.profile, screen: "mac_profile_screen")
     try capture("16-profile")
-    let editProfileButton = app.buttons["Edit Profile"].firstMatch
+    let editProfileButton = app.buttons["Edit profile"].firstMatch
     XCTAssertTrue(editProfileButton.waitForExistence(timeout: 8), "Missing Edit Profile button")
     editProfileButton.click()
     waitFor("mac_profile_editor")
