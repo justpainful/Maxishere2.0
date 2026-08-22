@@ -46,7 +46,7 @@ final class MaxMacUITests: XCTestCase {
     app.typeKey(.escape, modifierFlags: [])
     waitFor("mac_vault_screen")
 
-    app.buttons["Upload"].firstMatch.click()
+    require("mac_toolbar_upload").click()
     waitFor("mac_upload_sheet")
     try capture("06-upload-sheet")
     let uploadDemoButton = app.buttons["Upload Demo File"].firstMatch
