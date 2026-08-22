@@ -128,27 +128,24 @@ struct MediaDetailView: View {
           }
         }
 
-        Button {
-          model.isRatingPresented = true
-        } label: {
-          HStack {
-            VStack(alignment: .leading, spacing: 4) {
-              Text(model.copy("ratings")).font(.headline)
-              Text("Two people, two independent scores")
-                .font(.caption)
-                .foregroundStyle(palette.textSecondary)
-            }
-            Spacer()
-            RatingBadge(title: "You", value: item.ownRating, tint: palette.accent)
-            RatingBadge(title: "Nora", value: item.partnerRating, tint: palette.secondaryAccent)
+        HStack {
+          VStack(alignment: .leading, spacing: 4) {
+            Text(model.copy("ratings")).font(.headline)
+            Text("Two people, two independent scores")
+              .font(.caption)
+              .foregroundStyle(palette.textSecondary)
           }
-          .padding(15)
-          .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 17))
+          Spacer()
+          RatingBadge(title: "You", value: item.ownRating, tint: palette.accent)
+          RatingBadge(title: "Nora", value: item.partnerRating, tint: palette.secondaryAccent)
+          Button("Edit", systemImage: "slider.horizontal.3") {
+            model.isRatingPresented = true
+          }
+          .buttonStyle(.glassProminent)
+          .accessibilityIdentifier("mac_player_rate")
         }
-        .buttonStyle(.plain)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Open ratings")
-        .accessibilityIdentifier("mac_player_rate")
+        .padding(15)
+        .glassEffect(.regular, in: .rect(cornerRadius: 17))
 
         Divider()
 

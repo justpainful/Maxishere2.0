@@ -109,11 +109,13 @@ final class MaxMacUITests: XCTestCase {
       try capture("22-theme-\(theme)", fullScreen: true)
     }
 
-    let languagePicker = require("mac_settings_language")
-    languagePicker
-      .coordinate(withNormalizedOffset: CGVector(dx: 0.75, dy: 0.5))
-      .click()
-    XCTAssertTrue(app.staticTexts["الإعدادات"].waitForExistence(timeout: 8), "Arabic interface did not appear")
+    app.terminate()
+    _ = app.wait(for: .notRunning, timeout: 5)
+    launch(authenticated: true, width: 1000, height: 720, language: "ar")
+    open(.profile, screen: "mac_profile_screen")
+    require("mac_profile_settings").click()
+    waitFor("mac_settings_screen", timeout: 15)
+    XCTAssertTrue(app.staticTexts["المظهر"].waitForExistence(timeout: 8), "Arabic interface did not appear")
     try capture("23-settings-arabic-rtl", fullScreen: true)
   }
 
@@ -129,7 +131,7 @@ final class MaxMacUITests: XCTestCase {
     try capture("27-profile-compact")
   }
 
-  private func launch(authenticated: Bool, width: Int, height: Int) {
+  private func launch(authenticated: Bool, width: Int, height: Int, language: String = "en") {
     app.launchArguments = [
       "-MaxMacUITestMode",
       authenticated ? "-MaxMacUITestAuthenticated" : "-MaxMacUITestLoggedOut",
@@ -137,10 +139,14 @@ final class MaxMacUITests: XCTestCase {
     app.launchEnvironment["MAX_MAC_UI_TESTING"] = "1"
     app.launchEnvironment["MAX_MAC_UI_TEST_AUTHENTICATED"] = authenticated ? "1" : "0"
     app.launchEnvironment["MAX_MAC_UI_TEST_THEME"] = "max"
-    app.launchEnvironment["MAX_MAC_UI_TEST_LANGUAGE"] = "en"
+    app.launchEnvironment["MAX_MAC_UI_TEST_LANGUAGE"] = language
     app.launchEnvironment["MAX_MAC_WINDOW_WIDTH"] = "\(width)"
     app.launchEnvironment["MAX_MAC_WINDOW_HEIGHT"] = "\(height)"
     app.launch()
+    if !app.windows.firstMatch.waitForExistence(timeout: 5) {
+      app.activate()
+      app.typeKey("n", modifierFlags: .command)
+    }
     XCTAssertTrue(app.windows.firstMatch.waitForExistence(timeout: 15), "The Max window did not appear")
     if authenticated {
       waitFor("mac_vault_screen", timeout: 15)
