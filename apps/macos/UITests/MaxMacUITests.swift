@@ -49,7 +49,9 @@ final class MaxMacUITests: XCTestCase {
     app.buttons["Upload"].firstMatch.click()
     waitFor("mac_upload_sheet")
     try capture("06-upload-sheet")
-    require("mac_upload_start").click()
+    let uploadDemoButton = app.buttons["Upload Demo File"].firstMatch
+    XCTAssertTrue(uploadDemoButton.waitForExistence(timeout: 8), "Missing demo upload button")
+    uploadDemoButton.click()
     waitFor("mac_transfers_sheet")
     try capture("07-transfer-manager")
     app.typeKey(.escape, modifierFlags: [])
