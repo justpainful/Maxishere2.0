@@ -88,12 +88,14 @@ final class MaxMacUITests: XCTestCase {
     app.typeKey(.escape, modifierFlags: [])
 
     open(.chats, screen: "mac_chats_screen")
-    waitFor("mac_chat_detail")
-    try capture("13-chats-conversation")
     let conversationDetailsButton = app.buttons["Conversation Details"].firstMatch
-    XCTAssertTrue(conversationDetailsButton.waitForExistence(timeout: 8), "Missing conversation details button")
+    XCTAssertTrue(conversationDetailsButton.waitForExistence(timeout: 8), "Missing conversation detail")
+    try capture("13-chats-conversation")
     conversationDetailsButton.click()
-    waitFor("mac_chat_details_panel")
+    XCTAssertTrue(
+      app.staticTexts["Media, links, and conversation controls"].waitForExistence(timeout: 8),
+      "Missing conversation details panel"
+    )
     try capture("14-chat-details-panel")
     let newConversationButton = app.buttons["New Conversation"].firstMatch
     XCTAssertTrue(newConversationButton.waitForExistence(timeout: 8), "Missing new conversation button")
