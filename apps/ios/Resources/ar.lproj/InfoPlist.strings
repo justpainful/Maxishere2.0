@@ -1,0 +1,4 @@
+"NSPhotoLibraryUsageDescription" = "يتيح لك Max استعادة الصور والفيديوهات على هذا الـ iPhone واختيار وسائط لرفعها أو مشاركتها بشكل خاص.";
+"NSPhotoLibraryAddUsageDescription" = "يحفظ Max فقط الملفات التي تختار تنزيلها أو تصديرها صراحةً.";
+"NSLocalNetworkUsageDescription" = "قد يتصل Max بخادم التطوير المحلي الذي تضبطه بنفسك.";
+"NSFaceIDUsageDescription" = "يستخدم Max ميزة Face ID فقط عند تفعيل القفل المزدوج لحماية حسابك ووسائطك الخاصة.";
