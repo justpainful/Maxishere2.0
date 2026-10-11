@@ -1,0 +1,7 @@
+{
+  "bundleIdentifier": "app.max.iphone",
+  "displayName": "Max",
+  "targetName": "Max",
+  "projectPath": "apps/max/project.yml",
+  "infoPlistPath": "apps/max/Resources/Info.plist"
+}

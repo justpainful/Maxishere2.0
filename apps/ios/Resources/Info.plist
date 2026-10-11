@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIDesignRequiresCompatibility</key>
+	<false/>
+	<key>UILaunchScreen</key>
+	<dict/>
+  <key>CFBundleIdentifier</key>
+  <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+  <key>CFBundleExecutable</key>
+  <string>$(EXECUTABLE_NAME)</string>
+  <key>CFBundleInfoDictionaryVersion</key>
+  <string>6.0</string>
+  <key>CFBundlePackageType</key>
+  <string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+  <key>CFBundleDisplayName</key>
+  <string>Max</string>
+  <key>CFBundleName</key>
+  <string>Max</string>
+  <key>CFBundleShortVersionString</key>
+  <string>$(MARKETING_VERSION)</string>
+  <key>CFBundleVersion</key>
+  <string>$(CURRENT_PROJECT_VERSION)</string>
+  <key>LSRequiresIPhoneOS</key>
+  <true/>
+  <key>UIApplicationSceneManifest</key>
+  <dict>
+    <key>UIApplicationSupportsMultipleScenes</key>
+    <false/>
+  </dict>
+  <!-- Required by AVPictureInPictureController, which MaxPlayerSurface creates
+       and starts automatically from inline. Without it iOS suspends the process
+       on backgrounding and playback dies instead of handing off to PiP. -->
+  <key>UIBackgroundModes</key>
+  <array>
+    <string>audio</string>
+  </array>
+  <key>UISupportedInterfaceOrientations</key>
+  <array>
+    <string>UIInterfaceOrientationPortrait</string>
+    <string>UIInterfaceOrientationLandscapeLeft</string>
+    <string>UIInterfaceOrientationLandscapeRight</string>
+  </array>
+  <key>UISupportedInterfaceOrientations~ipad</key>
+  <array>
+    <string>UIInterfaceOrientationPortrait</string>
+  </array>
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>Max lets you revisit photos and videos on this iPhone and choose media to upload or share privately.</string>
+  <key>NSFaceIDUsageDescription</key>
+  <string>Max uses Face ID only when you enable Double Lock to protect your account and private media.</string>
+  <key>NSPhotoLibraryAddUsageDescription</key>
+  <string>Max saves only files you explicitly download or export.</string>
+  <key>NSMicrophoneUsageDescription</key>
+  <string>Max uses the microphone only when you choose to record a voice message.</string>
+  <key>NSSpeechRecognitionUsageDescription</key>
+  <string>Max transcribes your voice notes on this device.</string>
+  <key>NSCameraUsageDescription</key>
+  <string>Max uses the camera only when you choose to take a photo for a message.</string>
+  <key>NSLocalNetworkUsageDescription</key>
+  <string>Max may connect to your own local development server when configured.</string>
+  <key>ITSAppUsesNonExemptEncryption</key>
+  <false/>
+  <!-- Build-time backend origin. Values come from Config/AppIdentity.xcconfig
+       so a deployment change never needs a source edit. A server address the
+       user saves in Settings always wins over these at runtime. -->
+  <key>MAX_API_BASE_URL</key>
+  <string>$(MAX_API_BASE_URL)</string>
+  <key>MAX_WS_URL</key>
+  <string>$(MAX_WS_URL)</string>
+  <key>MAX_BACKEND_HOSTS</key>
+  <string>$(MAX_BACKEND_HOSTS)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>app.max.iphone</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>max</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

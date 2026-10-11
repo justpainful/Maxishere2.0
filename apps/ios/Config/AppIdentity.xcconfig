@@ -1,0 +1,22 @@
+// Max iPhone identity is immutable. Tests may use documented suffixes; the
+// production application must always resolve to app.max.iphone.
+MAX_CANONICAL_BUNDLE_ID = app.max.iphone
+PRODUCT_BUNDLE_IDENTIFIER = $(MAX_CANONICAL_BUNDLE_ID)
+
+// Backend origin the shipped build talks to by default. These are surfaced to
+// the app through MAX_API_BASE_URL / MAX_WS_URL in Resources/Info.plist and
+// read by MaxConfiguration.fromBundle(). Change the deployment here, never in
+// Swift. A server address the user saves in Settings always takes precedence.
+//
+// NOTE: `//` begins a comment in an xcconfig file, so the scheme separator is
+// assembled from MAX_URL_SEPARATOR instead of being written literally.
+MAX_URL_SEPARATOR = /
+MAX_API_HOST = archivedata.shop
+MAX_API_BASE_URL = https:$(MAX_URL_SEPARATOR)$(MAX_URL_SEPARATOR)$(MAX_API_HOST)
+MAX_WS_URL = wss:$(MAX_URL_SEPARATOR)$(MAX_URL_SEPARATOR)$(MAX_API_HOST)
+
+// Additional origins that still belong to this deployment (a CDN, a reverse
+// proxy, a tunnel), comma separated. An entry beginning with `.` matches any
+// subdomain. The configured origin above is always trusted without being
+// listed here, so this stays empty for a normal deployment.
+MAX_BACKEND_HOSTS =

@@ -1,0 +1,70 @@
+name: Build unsigned iOS IPA
+
+# Manual only in this (private) repository: macOS minutes here are billed.
+# Automatic IPA builds run on the public build mirror, which
+# tools/Publish-IosMirror.ps1 feeds with a snapshot of apps/ios and this
+# workflow (with a push trigger on main added at publish time).
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# Newer pushes to the same branch supersede in-flight IPA builds so the
+# iteration loop does not queue up stale 45-minute macOS runs.
+concurrency:
+  group: ios-ipa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unsigned-ipa:
+    name: Unsigned IPA for Sideloadly
+    # iOS 26 Liquid Glass APIs require the Xcode 26 SDK; macos-15 only ships
+    # Xcode 16.4/iOS 18.5 and cannot compile this target.
+    runs-on: macos-26
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: apps/ios
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned XcodeGen
+        run: |
+          curl --fail --location --retry 3 --silent --show-error \
+            --output "$RUNNER_TEMP/xcodegen.zip" \
+            https://github.com/yonaskolb/XcodeGen/releases/download/2.44.1/xcodegen.zip
+          unzip -q "$RUNNER_TEMP/xcodegen.zip" -d "$RUNNER_TEMP/xcodegen"
+          mkdir -p "$HOME/.local/bin"
+          install -m 0755 "$(find "$RUNNER_TEMP/xcodegen" -type f -name xcodegen -print -quit)" "$HOME/.local/bin/xcodegen"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Generate deterministic Xcode project
+        run: |
+          xcodegen --version
+          xcodegen generate --spec project.yml
+      - name: Build product for simulator
+        run: |
+          xcodebuild -project Max.xcodeproj -scheme Max \
+            -destination 'generic/platform=iOS Simulator' \
+            build
+      - name: Archive without code signing
+        run: |
+          xcodebuild -project Max.xcodeproj -scheme Max -configuration Release \
+            -sdk iphoneos -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/Max.xcarchive" clean archive \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY='' DEVELOPMENT_TEAM=''
+      - name: Package unsigned IPA
+        run: |
+          mkdir -p "$RUNNER_TEMP/ipa/Payload"
+          cp -R "$RUNNER_TEMP/Max.xcarchive/Products/Applications/Max.app" "$RUNNER_TEMP/ipa/Payload/Max.app"
+          ditto -c -k --sequesterRsrc --keepParent "$RUNNER_TEMP/ipa/Payload" "$RUNNER_TEMP/Max-unsigned.ipa"
+          shasum -a 256 "$RUNNER_TEMP/Max-unsigned.ipa" | tee "$RUNNER_TEMP/Max-unsigned.ipa.sha256"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Max-unsigned-ipa
+          path: |
+            ${{ runner.temp }}/Max-unsigned.ipa
+            ${{ runner.temp }}/Max-unsigned.ipa.sha256
+          if-no-files-found: error
+          retention-days: 7

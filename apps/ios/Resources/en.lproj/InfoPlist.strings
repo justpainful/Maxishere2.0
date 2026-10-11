@@ -1,0 +1,4 @@
+"NSPhotoLibraryUsageDescription" = "Max lets you revisit photos and videos on this iPhone and choose media to upload or share privately.";
+"NSPhotoLibraryAddUsageDescription" = "Max saves only files you explicitly download or export.";
+"NSLocalNetworkUsageDescription" = "Max may connect to your own local development server when configured.";
+"NSFaceIDUsageDescription" = "Max uses Face ID only when you enable Double Lock to protect your account and private media.";
